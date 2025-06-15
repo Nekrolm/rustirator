@@ -1,4 +1,3 @@
-#include <vector>
 #include <cstdint>
 #include <ranges>
 #include <concepts>
@@ -21,7 +20,7 @@ namespace range = ::std::ranges;
 
 template<typename C, typename R>
 concept Collectable = range::range<R> && 
-                      std::constructible_from<C, 
+                      ::std::constructible_from<C, 
                                 range::iterator_t<R>, 
                                 range::sentinel_t<R>>;
 
@@ -41,6 +40,9 @@ private:
 template <range::range R>
 struct Iterator {
     auto collect() &&;
+
+    auto begin() { return range::begin(range); }
+    auto end() { return range::end(range); }
 
     auto map(std::invocable<range::range_value_t<R>> auto && f) &&;
     auto filter(std::predicate<range::range_value_t<R>> auto && f) &&;
